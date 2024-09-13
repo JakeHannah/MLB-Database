@@ -1,0 +1,678 @@
+:root {
+    /* teams */
+    --angels-red: 186, 0, 33;
+    --angels-blue: 0, 50, 99;
+    --astros-blue: 0, 45, 98;
+    --astros-orange: 235, 110, 31;
+    --athletics-green: 0, 56, 49;
+    --athletics-yellow: 239, 178, 30;
+    --bluejays-light-blue: 19, 74, 142;
+    --bluejays-dark-blue: 29, 45, 92;
+    --bluejays-red: 232, 41, 28;
+    --braves-red: 206, 17, 65;
+    --braves-blue: 19, 39, 79;
+    --brewers-yellow: 255, 197, 47;
+    --brewers-blue: 18, 40, 75;
+    --cardinals-red: 151, 35, 63;
+    --cardinals-yellow: 255, 182, 18;
+    --cubs-blue: 14, 51, 134;
+    --cubs-red: 204, 52, 51;
+    --diamondbacks-red: 167, 25, 48;
+    --diamondbacks-tan: 227, 212, 173;
+    --dodgers-blue: 0, 90, 156;
+    --dodgers-siver: 191, 192, 191;
+    --dodgers-red: 239, 62, 66;
+    --giants-orange: 253, 90, 30;
+    --giants-black: 39, 37, 31;
+    --guardians-blue: 0, 56, 93;
+    --guardians-red: 229, 0, 34;
+    --mariners-green: 0, 92, 92;
+    --mariners-blue: 12, 44, 86;
+    --marlins-blue: 0, 163, 224;
+    --marlins-red: 239, 51, 64;
+    --marlins-slate: 65, 116, 141;
+    --mets-blue: 0, 45, 114;
+    --mets-orange: 252, 89, 16;
+    --nationals-red: 171, 0, 3;
+    --nationals-blue: 20, 34, 90;
+    --orioles-black: 0, 0, 0;
+    --orioles-orange: 223, 70, 1;
+    --padres-brown: 47, 36, 29;
+    --padres-yellow: 255, 196, 37;
+    --pirates-yellow: 253, 184, 39;
+    --phillies-red: 232, 24, 40;
+    --phillies-blue: 0, 45, 114;
+    --rangers-red: 192, 17, 31;
+    --rangers-blue: 0, 50, 120;
+    --rays-baby-blue: 143, 188, 230;
+    --rays-navy-blue: 9, 44, 92;
+    --reds-red: 198, 1, 31;
+    --redsox-red: 189, 48, 57;
+    --redsox-blue: 12, 35, 64;
+    --rockies-purple: 51, 51, 102;
+    --royals-blue: 0, 70, 135;
+    --royals-gold: 189, 155, 96;
+    --tigers-orange: 250, 70, 22;
+    --tigers-blue: 12, 35, 64;
+    --twins-blue: 0, 43, 92;
+    --twins-red: 211, 17, 69;
+    --whitesox-silver: 196, 206, 212;
+    --yankees-blue: 0, 48, 135;
+    --yankees-red: 228, 0, 44;
+    --yankees-navy: 12, 35, 64;
+    /* other */
+    --white: 255, 255, 255;
+    --black: 0, 0, 0;
+    --dark: 18, 18, 18;
+    --grey: 144, 161, 157;
+    /* positions */
+    --blue: 4, 155, 229;
+    --green: 137, 217, 157;
+    --pink: 252, 108, 106;
+    --yellow: 253, 184, 39;
+    --purple: 164, 147, 245;
+}
+
+/* custom scrollbar */
+*::-webkit-scrollbar {
+    width: 15px;
+    background-color: transparent;
+    border: none;
+}
+
+*::-webkit-scrollbar-track {
+    background-color: rgba(var(--black), 0.25);
+    border: transparent;
+    border-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: rgba(var(--white), 0.15);
+    background-clip: content-box;
+}
+
+    *::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(var(--white), 0.25);
+    }
+
+/* start of html classes */
+body {
+    font-family: Bahnschrift;
+    background-color: rgba(var(--dark), 1);
+    margin: 0px;
+    font-size: 16px;
+    color: rgba(var(--white),1 );
+}
+
+a {
+    width: 100%;
+    text-decoration: none;
+    color: rgba(var(--white), 1);
+}
+    a:hover {
+        color: rgba(var(--white), 0.9);
+    }
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 4rem;
+    color: rgba(var(--white), 1);
+    background: rgba(var(--black), 0.5);
+    border-bottom: 2px solid rgba(var(--brewers-blue), 1);
+    overflow: hidden;
+}
+
+    header > img {
+        width: 440px;
+/*        z-index: -1;*/
+    }
+
+.header-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    gap: 2rem;
+}
+
+    .header-row > img {
+        height: 3rem;
+}
+
+.img-background {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    background-color: rgba(var(--black), 0.15);
+    text-align: center;
+    overflow: clip;
+}
+    .img-background > img {
+        width: 3rem;
+        height: 3rem;
+    }
+
+h1 {
+    margin-top: 15px;
+
+}
+
+button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 10px;
+    background-color: rgba(var(--white), 0.15);
+    color: rgba(var(--white), 1);
+    font-size: 16px;
+    height: fit-content;
+}
+
+button[type=back] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 10px;
+    background-color: rgba(var(--pink), 0.5);
+    color: rgba(var(--white), 1);
+    font-size: 16px;
+    height: fit-content;
+}
+
+#team-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fire-gradient {
+    background: linear-gradient(to bottom right, rgba(var(--angels-red), 0.5), rgba(var(--athletics-yellow), 0.5));
+}
+
+.cold-gradient {
+    background: linear-gradient(to bottom right, rgba(var(--bluejays-dark-blue), 0.5), rgba(var(--bluejays-light-blue), 0.5));
+}
+
+#team-name {
+    font-size: 22px;
+/*    text-shadow: 2px 2px 4px black;*/
+}
+
+.team-info-background {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: fit-content;
+    background-color: rgba(var(--black), 0.25);
+}
+
+.team-info {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin: 1rem;
+}
+
+.info-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 10px;
+    background-color: rgba(var(--white), 0.15);
+    border: 1px solid rgba(var(--white), 0.15);
+    color: rgba(var(--white), 1);
+    font-size: 16px;
+    height: fit-content;
+}
+    .info-box > img{
+        height: 16px;
+    }
+
+.icon {
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    height: fit-content;
+    padding: 0.5rem;
+    background-color: rgba(var(--black), 0.25);
+}
+
+.team-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.rosters {
+    flex-grow: 1; /* Allow the rosters to take up remaining space */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem;
+}
+
+.info-sidebar {
+    width: 400px; /* Fixed width for sidebar */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: rgba(var(--white), 0.05);
+    overflow: hidden;
+}
+
+.stadium {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 200px;
+    border: 2px solid rgba(var(--black), 1);
+    border-radius: 5px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    overflow: hidden;
+}
+
+.box-score {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.bs-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: rgba(var(--black), 0.75);
+    align-items: center;
+    height: 60px;
+    width: 100%;
+}
+
+.away-score {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.home-score {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+    .away-score > img, .home-score > img {
+        height: 30px;
+    }
+
+.table-score {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    border: 2px solid rgba(var(--black), 1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.team-box > img {
+    height: 1rem;
+    padding-right: 1rem;
+}
+
+
+/*@media (max-width: 1800px) {
+    .rosters {
+      flex-direction: column;
+    }
+    .player-list {
+        width: 100% !important;
+    }
+  }
+
+  @media (max-width: 1332px) {
+    .league-container {
+        margin-bottom: 2rem !important;
+    }
+  }*/
+
+.shadow-image {
+    box-shadow: 2px 5px 10px rgba(var(--black), 0.5); /* Adjust the values as needed */
+}
+
+.pl-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.pl-header {
+    font-size: 18px;
+    font-style: italic;
+    color: rgba(var(--white), 1);
+}
+
+.player-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 0.5rem;
+    border-radius: 5px;
+    color: rgba(var(--white), 0.75);
+    font-size: 16px;
+    height: fit-content;
+    width: 100%;
+    border: 1px solid rgba(var(--white), 1);
+}
+
+.position {
+    color: rgba(var(--white), 1);
+}
+
+.pink {
+    background-color: rgba(var(--pink), 0.10);
+}
+
+.pink-th {
+    background-color: rgba(var(--pink), 0.25);
+    border-bottom: 1px solid rgba(var(--pink), 1);
+}
+
+.green {
+    background-color: rgba(var(--green), 0.10);
+}
+
+.green-th {
+    background-color: rgba(var(--green), 0.25);
+    border-bottom: 1px solid rgba(var(--green), 1);
+}
+
+.yellow {
+    background-color: rgba(var(--yellow), 0.10);
+}
+
+.yellow-th {
+    background-color: rgba(var(--yellow), 0.25);
+    border-bottom: 1px solid rgba(var(--yellow), 1);
+}
+
+.blue {
+    background-color: rgba(var(--blue), 0.10);
+}
+
+.blue-th {
+    background-color: rgba(var(--blue), 0.25);
+    border-bottom: 1px solid rgba(var(--blue), 1);
+}
+
+.purple {
+    background-color: rgba(var(--purple), 0.10);
+}
+
+.purple-th {
+    background-color: rgba(var(--purple), 0.25);
+    border-bottom: 1px solid rgba(var(--purple), 1);
+}
+
+.orange {
+    background-color: rgba(var(--giants-orange), 0.10);
+}
+
+.orange-th {
+    background-color: rgba(var(--giants-orange), 0.25);
+    border-bottom: 1px solid rgba(var(--giants-orange), 1);
+}
+
+
+
+table {
+    border-collapse: collapse;
+    border-radius: 5px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+tr:hover td:not(:first-child) {
+    background-color: rgba(var(--black), 0.15);
+}
+
+
+td {
+    width: fit-content !important;
+    text-align: center;
+    border-bottom: 1px solid rgba(var(--black), 0.15);
+}
+
+    td div {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+.center {
+    text-align: center;
+}
+
+th {
+    color: rgba(var(--white), 1);
+    text-align: center;
+}
+
+.mugshot {
+    background-color: rgba(var(--black), 0.15);
+   overflow: clip;
+}
+
+.player {
+    display: flex;
+    font-size: 16px;
+}
+
+.team-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 5px;
+    background-color: transparent;
+    font-size: 16px;
+    height: fit-content;
+    width: 100%;
+}
+
+.team-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 2.5px;
+    background: linear-gradient(to right, rgba(var(--white), 0.10), rgba(var(--black), 0.5));
+    width: 100%;
+    transition: 0.5s ease;
+    height: 2rem;
+    overflow: hidden;
+    opacity: 1;
+}
+
+    .team-button:hover {
+        opacity: 0.75;
+    }
+
+    .team-button > img {
+        height: 2rem;
+    }
+
+.player-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 2.5px;
+    background: linear-gradient(to right, rgba(var(--white), 0.10), rgba(var(--black), 0.5));
+    width: 100%;
+    transition: 0.5s ease;
+    height: 2rem;
+    overflow: hidden;
+    opacity: 1;
+}
+
+    .player-button:hover {
+        opacity: 0.75;
+    }
+
+    .player-button > img {
+        height: 2rem;
+        margin-right: 2.5rem;
+    }
+
+    .player-button > img {
+        height: 1rem;
+    }
+
+.division-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.division-header {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    font-size: 18px;
+    color: rgba(var(--white), 1);
+}
+
+.division-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 2px;
+    border-radius: 5px;
+    background-color: rgba(var(--black), 0.30);
+    color: rgba(var(--white), 1);
+    font-size: 18px;
+    height: fit-content;
+    width: 400px;
+}
+
+    .league-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .league {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 1rem;
+        background-color: rgba(var(--white), 0.05);
+        border: 1px solid rgba(var(--white), 0.15);
+        border-radius: 5px;
+        padding: 1rem;
+    }
+
+    .league-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+@media only screen and (max-width: 1333px) {
+    .league-row {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+@media only screen and (max-width: 1250px) {
+    .league {
+        border-radius: 0px;
+    }
+}
+
+
+    .loading {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(var(--black), 0.15);
+    }
+
+        .loading > img {
+            height: 20rem;
+        }
+
+    .loading-text {
+        color: rgba(var(--white), 1);
+        font-size: 30px;
+    }
+
+.next-game {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 10px;
+    background-color: rgba(var(--white), 0.15);
+    border: 1px solid rgba(var(--white), 0.15);
+    color: rgba(var(--white), 1);
+}
+    .next-game > img {
+        height: 16px;
+    }

@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@namespace MLB_Database.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src gap://ready file://* *; style-src 'self' http://* https://* 'unsafe-inline'; script-src 'self' http://* https://* 'unsafe-inline' 'unsafe-eval'">
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link rel="icon" type="image/x-icon" sizes="16" href="/Logos/mlb-favicon.png">
+    <link href="MLB Database.styles.css" rel="stylesheet" />
+    <link href="css/styles (2).css" rel="stylesheet" />
+    <link href="css/team.css" rel="stylesheet" />
+    <script src="/team.js"></script>
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+</head>
+<body>
+    @RenderBody()
+    <script src="_framework/blazor.server.js"></script>
+</body>
+</html>

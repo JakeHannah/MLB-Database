@@ -1,0 +1,110 @@
+﻿@using MLB_Database.Services
+@using MLB_Database.Data
+@using Microsoft.EntityFrameworkCore;
+
+@inject MlbApiService MLBAPI
+
+@if (MLBHRLeaders != null && MLBHRLeaders.LeagueLeaders != null && count < maxCount)
+{
+    @foreach (var player in MLBHRLeaders.LeagueLeaders[0].Leaders)
+    {
+        if (count < maxCount)
+        {
+            count++;
+            <a href="/team/@GetPlayerTeamLink(player.Team.Id)">
+                <div class="player-button @GetTeamAbbreviation(player.Team.Id)">
+                    <div class="musghot">
+                        <div class="img-background">
+                            <img src="@GetPlayerImage(player.Person.Id)" />
+                        </div>
+                    </div>
+                    <span>@player.Person.FullName</span><img src="../Logos/@GetCountryFlag(player.Person.BirthCountry)" class="shadow-image" />
+                    <span title="Home Runs">@player.Value</span>
+                </div>
+            </a>
+        }
+    }
+}
+@code {
+    public MlbRosterResponse MLBRoster { get; set; }
+    [Parameter] public MlbHRLeadersStatsResponse MLBHRLeaders { get; set; }
+    [Parameter] public string Abreviation { get; set; }
+    [Parameter] public string Mugshot { get; set; }
+    [Parameter] public string PlayerName { get; set; }
+    [Parameter] public string TeamLogo { get; set; }
+    [Parameter] public int TeamId { get; set; }
+    [CascadingParameter] public MyDbContext Context { get; set; }
+    private int count = 0;
+    private const int maxCount = 12;
+    protected override async Task OnInitializedAsync()
+    {
+        count = 0;
+
+    }
+
+    protected string GetPlayerTeamLink(int Id)
+    {
+        var team = Context.TeamInfo.First(x => x.MLBId == Id);
+
+        return team.Id.ToString();
+    }
+
+    protected string GetPlayerImage(int Id)
+    {
+        var image = MLBAPI.GetPlayerImageUrl(Id);
+
+        return image;
+    }
+
+    protected string GetPlayerTeam(int Id)
+    {
+        var team = Context.TeamInfo.First(x => x.MLBId == Id);
+
+        return team.Team_Logo;
+    }
+    protected string GetTeamAbbreviation(int Id)
+    {
+        var team = Context.TeamInfo.First(x => x.MLBId == Id);
+
+        return team.Team_Abreviation;
+    }
+
+    protected string GetCountryFlag(string birthCountry)
+    {
+        string flagFileName;
+
+        switch (birthCountry)
+        {
+            case "USA":
+                flagFileName = "usa_flag.png";
+                break;
+            case "Mexico":
+                flagFileName = "mexico_flag.png";
+                break;
+            case "Venezuela":
+                flagFileName = "venezuela_flag.png";
+                break;
+            case "Japan":
+                flagFileName = "japan_flag.png";
+                break;
+            case "Cuba":
+                flagFileName = "cuba_flag.png";
+                break;
+            case "Dominican Republic":
+                flagFileName = "dr_flag.png";
+                break;
+            case "Curacao":
+                flagFileName = "curacao_flag.png";
+                break;
+            case "Canada":
+                flagFileName = "canada_flag.png";
+                break;
+            default:
+                flagFileName = "default_flag.png"; // use a default image if the country doesn't match any case
+                break;
+        }
+
+        return flagFileName;
+    }
+
+}

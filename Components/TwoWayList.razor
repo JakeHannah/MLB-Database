@@ -1,0 +1,174 @@
+﻿@typeparam TPlayer where TPlayer : Player
+
+<div class="pl-header">Two-Way Player</div>
+<div class="@CssClass">
+    <table>
+        <tr class="@CssClass-th">
+            <th></th>
+            <th>#</th>
+            <th>Name</th>
+            <th>Position</th>
+            <th title="Games Played">G</th>
+            <th title="Plate Appearances">PA</th>
+            <th title="Batting Average">bAVG</th>
+            <th title="Home Runs">HR</th>
+            <th title="Win/Loss">W/L</th>
+            <th title="Earned Run Average">ERA</th>
+            <th title="Strikeouts">SO</th>
+        </tr>
+        @foreach (var player in Players)
+        {
+            <tr>
+                <td class="mugshot"><div class="img-background"><img src="@player.Person.Image" /></div></td>
+                <td>@player.JerseyNumber</td>
+                <td><a href="@CreateBaseballReferenceLink(player.Person.FullName)" target="_blank">@player.Person.FullName</a></td>
+                <td class="position">@player.Position.Abbreviation</td>
+                <td>@GetGamesPlayed(player.Person.Id)</td>
+                <td>@GetPlateAppearances(player.Person.Id)</td>
+                <td>@GetBattingAverage(player.Person.Id)</td>
+                <td>@GetHomeRuns(player.Person.Id)</td>
+                <td>@SetWinLoss(player.Person.Id)</td>
+                <td>@GetERA(player.Person.Id)</td>
+                <td>@GetStrikeOuts(player.Person.Id)</td>
+            </tr>
+        }
+    </table>
+</div>
+
+@code {
+    [Parameter]
+    public List<TPlayer> Players { get; set; } = new();
+
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+    [Parameter]
+    public Dictionary<int, MlbPlayerStatsResponse> KvPPlayerIdPlayerHittingStats { get; set; }
+
+    [Parameter]
+    public Dictionary<int, MlbPlayerStatsResponse> KvPPlayerIdPlayerPitchingStats { get; set; }
+
+    private string CreateBaseballReferenceLink(string name)
+    {
+        var nameParts = name.Split(' ');
+        var firstName = nameParts[0];
+        var lastName = nameParts[1];
+
+        var lastNamePart = lastName.PadRight(5, 'x').Substring(0, 5).ToLower();
+        var firstNamePart = firstName.PadRight(2, 'x').Substring(0, 2).ToLower();
+
+        var link = $"https://www.baseball-reference.com/players/{lastNamePart[0]}/{lastNamePart}{firstNamePart}01.shtml";
+        return link;
+    }
+
+    private string GetGamesPlayed(int id)
+    {
+        if (!IsStatsAvailable(id, KvPPlayerIdPlayerHittingStats))
+        {
+            return "-";
+        }
+        var splits = KvPPlayerIdPlayerHittingStats[id].Stats[0].Splits[0];
+        return splits.Stat.gamesPlayed.ToString();
+    }
+
+    private string GetPlateAppearances(int id)
+    {
+        if (!IsStatsAvailable(id, KvPPlayerIdPlayerHittingStats))
+        {
+            return "-";
+        }
+        var splits = KvPPlayerIdPlayerHittingStats[id].Stats[0].Splits[0];
+        return splits.Stat.plateAppearances.ToString();
+    }
+
+    private string GetBattingAverage(int id)
+    {
+        if (!IsStatsAvailable(id, KvPPlayerIdPlayerHittingStats))
+        {
+            return "-";
+        }
+        var splits = KvPPlayerIdPlayerHittingStats[id].Stats[0].Splits[0];
+        return splits.Stat.avg;
+    }
+
+    private string GetHomeRuns(int id)
+    {
+        if (!IsStatsAvailable(id, KvPPlayerIdPlayerHittingStats))
+        {
+            return "-";
+        }
+        var splits = KvPPlayerIdPlayerHittingStats[id].Stats[0].Splits[0];
+        return MissingStats(splits.Stat.homeRuns.ToString());
+    }
+
+    private string MissingStats(string stats)
+    {
+        if (string.IsNullOrEmpty(stats))
+        {
+            return "-";
+        }
+        return stats;
+    }
+
+    private string SetWinLoss(int id)
+    {
+        return GetWins(id) + "-" + GetLosses(id);
+    }
+
+    private string GetWins(int id)
+    {
+        if (!IsStatsAvailable(id, KvPPlayerIdPlayerPitchingStats))
+        {
+            return "";
+        }
+        var splits = KvPPlayerIdPlayerPitchingStats[id].Stats[0].Splits[0];
+        return splits.Stat.wins.ToString();
+    }
+
+    private string GetLosses(int id)
+    {
+        if (!IsStatsAvailable(id, KvPPlayerIdPlayerPitchingStats))
+        {
+            return "";
+        }
+        var splits = KvPPlayerIdPlayerPitchingStats[id].Stats[0].Splits[0];
+        return splits.Stat.losses.ToString();
+    }
+
+    private string GetERA(int id)
+    {
+        if (!IsStatsAvailable(id, KvPPlayerIdPlayerPitchingStats))
+        {
+            return "-";
+        }
+        var splits = KvPPlayerIdPlayerPitchingStats[id].Stats[0].Splits[0];
+        return splits.Stat.era.ToString();
+    }
+
+    private string GetStrikeOuts(int id)
+    {
+        if (!IsStatsAvailable(id, KvPPlayerIdPlayerPitchingStats))
+        {
+            return "-";
+        }
+        var splits = KvPPlayerIdPlayerPitchingStats[id].Stats[0].Splits[0];
+        return splits.Stat.strikeOuts.ToString();
+    }
+
+    private bool IsStatsAvailable(int id, Dictionary<int, MlbPlayerStatsResponse> dict)
+    {
+        if (!dict.ContainsKey(id))
+        {
+            return false;
+        }
+        if (dict[id].Stats == null || dict[id].Stats.Count() == 0)
+        {
+            return false;
+        }
+        if (dict[id].Stats[0].Splits == null || dict[id].Stats[0].Splits.Count() == 0)
+        {
+            return false;
+        }
+        return true;
+    }
+}

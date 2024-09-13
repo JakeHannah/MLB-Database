@@ -1,0 +1,182 @@
+﻿@page "/"
+@using MLB_Database.Services
+@using MLB_Database.Data
+@using Microsoft.EntityFrameworkCore;
+
+
+
+
+
+@inject MyDbContext DbContext
+@inject MlbApiService MLBAPI
+<CascadingValue Value="DbContext">
+    @if(contentLoading)
+{
+    <div class="loading">
+        <img style="height: 6rem;" src="../Logos/mlb.png" />
+        <div class="loading-text">Loading...</div>
+    </div>
+}
+else
+{
+    <Header />
+    <div class="league-container">
+        @foreach (var leagueGroup in leagueGroups)
+        {
+            <div class="division-header">@leagueGroup.Key</div>
+            <div class="league">
+                @foreach (var divisionGroup in leagueGroup.Value)
+                {
+                    <div class="division-container">
+                        <div class="division-header">@divisionGroup.Key</div>
+                        <div class="division-list">
+                            @foreach (var team in divisionGroup.Value)
+                            {
+                                    <TeamButton Standing="@team.Team_Standing" TeamId="@team.Id" Abreviation="@team.Team_Abreviation" TeamName="@team.Team_Name" TeamLogo="@GetLogoUrl(team.MLBId)" Wins="@team.Team_Wins" Losses="@team.Team_Losses" />
+                            }
+                        </div>
+
+                    </div>                        
+                }
+            </div>
+                        
+        }
+    </div>
+    <div class="league-row">
+        <div class="league-container">
+            <div class="division-header">League Leaders</div>
+                <div class="league">
+                    <div class="division-container">
+                        <div class="division-header"><img src="../Logos/AL.png" style="height: 1.5rem"/>AL Batting Leaders</div>
+                        <div class="division-list" style="width: 400px">
+                        <LeagueLeader MLBLeaders="MLBHittingLeadersNL" />
+                        </div>
+                    </div>
+                    <div class="division-container">
+                    <div class="division-header"><img src="../Logos/AL.png" style="height: 1.5rem"/>AL Pitching Leaders</div>
+                        <div class="division-list" style="width: 400px">
+                        <LeagueLeader MLBLeaders="MLBPitchingLeadersNL" />
+                        </div>
+                    </div>
+                </div>
+                <div class="league">
+                    <div class="division-container">
+                    <div class="division-header"><img src="../Logos/NL.png" style="height: 1.5rem"/>NL Batting Leaders</div>
+                        <div class="division-list" style="width: 400px">
+                        <LeagueLeader MLBLeaders="MLBHittingLeadersAL" />
+                        </div>
+                    </div>
+                    <div class="division-container">
+                    <div class="division-header"><img src="../Logos/NL.png" style="height: 1.5rem"/>NL Pitching Leaders</div>
+                        <div class="division-list" style="width: 400px">
+                            <LeagueLeader MLBLeaders="MLBPitchingLeadersAL" />
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="league-container" style="padding-bottom: 2rem;">
+                <div class="division-header"><img src="../Logos/MLB.png" style="height: 1.5rem" />MLB Leaders</div>
+            <div class="league">
+                <div class="division-container">
+                    <div class="division-header">Home Run Leaders</div>
+                    <div class="division-list" style="width: 400px">
+                        <HRLeaders MLBHRLeaders="MLBHRLeadersAL" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+</CascadingValue>
+
+
+
+@code {
+    private List<TeamInfo> teams;
+    private Dictionary<string, Dictionary<string, List<TeamInfo>>> leagueGroups;
+    public MlbLeadersStatsResponse MLBHittingLeadersNL { get; set; }
+    public MlbLeadersStatsResponse MLBHittingLeadersAL { get; set; }
+    public MlbLeadersStatsResponse MLBPitchingLeadersNL { get; set; }
+    public MlbLeadersStatsResponse MLBPitchingLeadersAL { get; set; }
+    public MlbHRLeadersStatsResponse MLBHRLeadersAL { get; set; }
+    public MlbHRLeadersStatsResponse MLBHRLeadersNL { get; set; }
+
+    private bool contentLoading = true;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadDataAsync();
+        }
+    }
+
+    private async Task LoadDataAsync()
+    {
+        contentLoading = true;
+        StateHasChanged();
+
+        var fetchDataTask = DbContext.TeamInfo.ToListAsync();
+        var delayTask = Task.Delay(1000);
+
+        await Task.WhenAll(fetchDataTask, delayTask);
+
+        teams = fetchDataTask.Result;
+        leagueGroups = new Dictionary<string, Dictionary<string, List<TeamInfo>>>();
+
+        foreach (var team in teams)
+        {
+            if (!leagueGroups.ContainsKey(team.Team_League))
+            {
+                leagueGroups[team.Team_League] = new Dictionary<string, List<TeamInfo>>();
+            }
+
+            if (!leagueGroups[team.Team_League].ContainsKey(team.Team_Division))
+            {
+                leagueGroups[team.Team_League][team.Team_Division] = new List<TeamInfo>();
+            }
+
+            leagueGroups[team.Team_League][team.Team_Division].Add(team);
+        }
+        // Loop through each group dictionary in the leagueGroups dictionary
+        foreach (var groupDict in leagueGroups.Values)
+        {
+            // Loop through each list of TeamInfo objects in the group dictionary
+            foreach (var teamList in groupDict.Values)
+            {
+                // Sort the list based on the Standing property
+                teamList.Sort((team1, team2) => team1.Team_Standing.CompareTo(team2.Team_Standing));
+            }
+        }
+        MLBHittingLeadersNL = await MLBAPI.GetLeaderStats("hitting", "103", DateTime.Now.Year);
+        MLBHittingLeadersAL = await MLBAPI.GetLeaderStats("hitting", "104", DateTime.Now.Year);
+
+        MLBPitchingLeadersNL = await MLBAPI.GetLeaderStats("pitching", "103", DateTime.Now.Year);
+        MLBPitchingLeadersAL = await MLBAPI.GetLeaderStats("pitching", "104", DateTime.Now.Year);
+
+        MLBHRLeadersNL = await MLBAPI.GetHRLeaderStats("103", DateTime.Now.Year);
+        MLBHRLeadersAL = await MLBAPI.GetHRLeaderStats("104", DateTime.Now.Year);
+
+        await UpdateTeamInfo();
+
+        contentLoading = false;
+        StateHasChanged();
+    }
+    private async Task UpdateTeamInfo()
+    {
+        foreach (var team in teams.ToList())
+        {
+            var teamRecord = await MLBAPI.GetTeamRecord(team.MLBId, DateTime.Now.Year);
+            team.Team_Wins = teamRecord.LeagueRecord.Wins;
+            team.Team_Losses = teamRecord.LeagueRecord.Losses;
+            team.Team_Standing = int.Parse(teamRecord.DivisionRank);
+            await DbContext.UpdateTeamInfoAsync(team);
+        }
+    }
+
+    public string GetLogoUrl(int teamId)
+    {
+        return $"https://www.mlbstatic.com/team-logos/team-cap-on-dark/{teamId}.svg";
+    }
+
+}

@@ -1,0 +1,81 @@
+﻿@using MLB_Database.Services
+@using MLB_Database.Data
+@using Microsoft.EntityFrameworkCore;
+
+@inject MlbApiService MLBAPI
+
+@if(MLBLeaders != null && MLBLeaders.Stats != null && count < 10)
+{
+@foreach(var player in MLBLeaders.Stats[0].Splits)
+        {
+        count++;
+        <a href="/team/@GetPlayerTeamLink(player.Team.Id)">
+    <div class="player-button @GetTeamAbbreviation(player.Team.Id)">
+        <div class="musghot">
+            <div class="img-background">
+                <img src="@GetPlayerImage(player.Player.Id)" />
+            </div>
+        </div>
+        <span>@player.Player.FullName</span>
+        @if(MLBLeaders.Stats[0].Group.DisplayName == "hitting") {
+                    <span title="Batting Average">@player.Stat.avg</span>
+                }
+                else
+                {
+                    <span title="Earned Run Average">@player.Stat.era</span>
+                }
+            </div>
+</a>
+        }
+}
+@code {
+    public MlbRosterResponse MLBRoster { get; set; }
+    [Parameter] public MlbLeadersStatsResponse MLBLeaders { get; set; }
+    [Parameter] public string Abreviation { get; set; }
+    [Parameter] public string Mugshot { get; set; }
+    [Parameter] public string PlayerName { get; set; }
+    [Parameter] public string TeamLogo { get; set; }
+    [Parameter] public int TeamId { get; set; }
+    [CascadingParameter] public MyDbContext Context { get; set; }
+    private int count = 0;
+    protected override async Task OnInitializedAsync()
+    {
+        count = 0;
+
+    }
+
+    protected string GetPlayerTeamLink(int Id)
+    {
+        var team = Context.TeamInfo.First(x => x.MLBId == Id);
+
+        return team.Id.ToString();
+    }
+
+
+    protected string GetPlayerImage(int Id)
+    {
+        var image = MLBAPI.GetPlayerImageUrl(Id);
+
+        return image;
+    }
+
+    protected string GetPlayerTeam(int Id)
+    {
+        var team = Context.TeamInfo.First(x => x.MLBId == Id);
+
+        return team.Team_Logo;
+    }
+    protected string GetTeamAbbreviation(int Id)
+    {
+        var team = Context.TeamInfo.First(x => x.MLBId == Id);
+
+        return team.Team_Abreviation;
+    }
+
+    protected string GetTeamLogo(int Id)
+    {
+        var team = Context.TeamInfo.First(x => x.MLBId == Id);
+
+        return team.Team_Logo;
+    }
+}

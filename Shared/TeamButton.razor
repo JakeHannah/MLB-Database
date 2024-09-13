@@ -1,0 +1,19 @@
+﻿@using MLB_Database.Data
+<a href="/team/@(TeamId.ToString())">
+    <div class="team-button @Abreviation">
+        <span>@(Ordinals.AddOrdinal(Standing.ToString()))</span>
+        <img src="@TeamLogo">
+        <span>@TeamName</span>
+        <span>@Wins-@Losses</span>
+    </div>
+</a>
+
+@code {
+    [Parameter] public string Abreviation { get; set; }
+    [Parameter] public string TeamName { get; set; }
+    [Parameter] public string TeamLogo { get; set; }
+    [Parameter] public int TeamId { get; set; }
+    [Parameter] public int Standing { get; set; }
+    [Parameter] public int Wins { get; set; }
+    [Parameter] public int Losses { get; set; }
+}

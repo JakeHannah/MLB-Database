@@ -1,0 +1,21 @@
+﻿@if(contentLoaded)
+{
+    @ChildContent
+}
+else
+{
+ <h1> LOADING TEST</h1>
+}
+
+@code {
+    bool contentLoaded;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(2000);
+        contentLoaded = true;
+    }
+}

@@ -1,0 +1,541 @@
+﻿.LAA {
+    background: linear-gradient(to left, rgba(var(--angels-red), 0.25), rgba(var(--angels-red), 1));
+}
+
+.HOU {
+    background: linear-gradient(to left, rgba(var(--astros-orange), 0.25), rgba(var(--astros-orange), 1));
+}
+
+.OAK {
+    background: linear-gradient(to left, rgba(var(--athletics-green), 0.25), rgba(var(--athletics-green), 1));
+}
+
+.TOR {
+    background: linear-gradient(to left, rgba(var(--bluejays-light-blue), 0.25), rgba(var(--bluejays-light-blue), 1));
+}
+
+.ATL {
+    background: linear-gradient(to left, rgba(var(--braves-blue), 0.25), rgba(var(--braves-blue), 1));
+}
+
+.MIL {
+    background: linear-gradient(to left, rgba(var(--brewers-blue), 0.25), rgba(var(--brewers-blue), 1));
+}
+
+.STL {
+    background: linear-gradient(to left, rgba(var(--cardinals-red), 0.25), rgba(var(--cardinals-red), 1));
+}
+
+.CHC {
+    background: linear-gradient(to left, rgba(var(--cubs-blue), 0.25), rgba(var(--cubs-blue), 1));
+}
+
+.ARI {
+    background: linear-gradient(to left, rgba(var(--diamondbacks-red), 0.25), rgba(var(--diamondbacks-red), 1));
+}
+
+.LAD {
+    background: linear-gradient(to left, rgba(var(--dodgers-blue), 0.25), rgba(var(--dodgers-blue), 1));
+}
+
+.SFG {
+    background: linear-gradient(to left, rgba(var(--giants-orange), 0.25), rgba(var(--giants-orange), 1));
+}
+
+.CLE {
+    background: linear-gradient(to left, rgba(var(--guardians-red), 0.25), rgba(var(--guardians-red), 1));
+}
+
+.SEA {
+    background: linear-gradient(to left, rgba(var(--mariners-green), 0.25), rgba(var(--mariners-green), 1));
+}
+
+.MIA {
+    background: linear-gradient(to left, rgba(var(--mariners-blue), 0.25), rgba(var(--marlins-blue), 1));
+}
+
+.NYM {
+    background: linear-gradient(to left, rgba(var(--mets-blue), 0.25), rgba(var(--mets-blue), 1));
+}
+
+.BAL {
+    background: linear-gradient(to left, rgba(var(--orioles-orange), 0.25), rgba(var(--orioles-orange), 1));
+}
+
+.SDP {
+    background: linear-gradient(to left, rgba(var(--padres-brown), 0.25), rgba(var(--padres-brown), 1));
+}
+
+.PHI {
+    background: linear-gradient(to left, rgba(var(--phillies-red), 0.25), rgba(var(--phillies-red), 1));
+}
+
+.PIT {
+    background: linear-gradient(to left, rgba(var(--pirates-yellow), 0.25), rgba(var(--pirates-yellow), 1));
+}
+
+.TEX {
+    background: linear-gradient(to left, rgba(var(--rangers-blue), 0.25), rgba(var(--rangers-blue), 1));
+}
+
+.TBR {
+    background: linear-gradient(to left, rgba(var(--rays-baby-blue), 0.25), rgba(var(--rays-baby-blue), 1));
+}
+
+.CIN {
+    background: linear-gradient(to left, rgba(var(--reds-red), 0.25), rgba(var(--reds-red), 1));
+}
+
+.BOS {
+    background: linear-gradient(to left, rgba(var(--redsox-red), 0.25), rgba(var(--redsox-red), 1));
+}
+
+.COL {
+    background: linear-gradient(to left, rgba(var(--rockies-purple), 0.25), rgba(var(--rockies-purple), 1));
+}
+
+.KCR {
+    background: linear-gradient(to left, rgba(var(--royals-blue), 0.25), rgba(var(--royals-blue), 1));
+}
+
+.DET {
+    background: linear-gradient(to left, rgba(var(--tigers-blue), 0.25), rgba(var(--tigers-blue), 1));
+}
+
+.MIN {
+    background: linear-gradient(to left, rgba(var(--twins-blue), 0.25), rgba(var(--twins-blue), 1));
+}
+
+.CWS {
+    background: linear-gradient(to left, rgba(var(--whitesox-silver), 0.25), rgba(var(--whitesox-silver), 1));
+}
+
+.NYY {
+    background: linear-gradient(to left, rgba(var(--yankees-blue), 0.25), rgba(var(--yankees-blue), 1));
+}
+
+.WAS {
+    background: linear-gradient(to left, rgba(var(--nationals-red), 0.25), rgba(var(--nationals-red), 1));
+}
+
+.LAA-flip {
+    background: linear-gradient(to right, rgba(var(--angels-red), 0.25), rgba(var(--angels-red), 1));
+}
+
+.HOU-flip {
+    background: linear-gradient(to right, rgba(var(--astros-orange), 0.25), rgba(var(--astros-orange), 1));
+}
+
+.OAK-flip {
+    background: linear-gradient(to right, rgba(var(--athletics-green), 0.25), rgba(var(--athletics-green), 1));
+}
+
+.TOR-flip {
+    background: linear-gradient(to right, rgba(var(--bluejays-light-blue), 0.25), rgba(var(--bluejays-light-blue), 1));
+}
+
+.ATL-flip {
+    background: linear-gradient(to right, rgba(var(--braves-blue), 0.25), rgba(var(--braves-blue), 1));
+}
+
+.MIL-flip {
+    background: linear-gradient(to right, rgba(var(--brewers-blue), 0.25), rgba(var(--brewers-blue), 1));
+}
+
+.STL-flip {
+    background: linear-gradient(to right, rgba(var(--cardinals-red), 0.25), rgba(var(--cardinals-red), 1));
+}
+
+.CHC-flip {
+    background: linear-gradient(to right, rgba(var(--cubs-blue), 0.25), rgba(var(--cubs-blue), 1));
+}
+
+.ARI-flip {
+    background: linear-gradient(to right, rgba(var(--diamondbacks-red), 0.25), rgba(var(--diamondbacks-red), 1));
+}
+
+.LAD-flip {
+    background: linear-gradient(to right, rgba(var(--dodgers-blue), 0.25), rgba(var(--dodgers-blue), 1));
+}
+
+.SFG-flip {
+    background: linear-gradient(to right, rgba(var(--giants-orange), 0.25), rgba(var(--giants-orange), 1));
+}
+
+.CLE-flip {
+    background: linear-gradient(to right, rgba(var(--guardians-red), 0.25), rgba(var(--guardians-red), 1));
+}
+
+.SEA-flip {
+    background: linear-gradient(to right, rgba(var(--mariners-green), 0.25), rgba(var(--mariners-green), 1));
+}
+
+.MIA-flip {
+    background: linear-gradient(to right, rgba(var(--marlins-blue), 0.25), rgba(var(--marlins-blue), 1));
+}
+
+.NYM-flip {
+    background: linear-gradient(to right, rgba(var(--mets-blue), 0.25), rgba(var(--mets-blue), 1));
+}
+
+.BAL-flip {
+    background: linear-gradient(to right, rgba(var(--orioles-orange), 0.25), rgba(var(--orioles-orange), 1));
+}
+
+.SDP-flip {
+    background: linear-gradient(to right, rgba(var(--padres-brown), 0.25), rgba(var(--padres-brown), 1));
+}
+
+.PHI-flip {
+    background: linear-gradient(to right, rgba(var(--phillies-red), 0.25), rgba(var(--phillies-red), 1));
+}
+
+.PIT-flip {
+    background: linear-gradient(to right, rgba(var(--pirates-yellow), 0.25), rgba(var(--pirates-yellow), 1));
+}
+
+.TEX-flip {
+    background: linear-gradient(to right, rgba(var(--rangers-blue), 0.25), rgba(var(--rangers-blue), 1));
+}
+
+.TBR-flip {
+    background: linear-gradient(to right, rgba(var(--rays-baby-blue), 0.25), rgba(var(--rays-baby-blue), 1));
+}
+
+.CIN-flip {
+    background: linear-gradient(to right, rgba(var(--reds-red), 0.25), rgba(var(--reds-red), 1));
+}
+
+.BOS-flip {
+    background: linear-gradient(to right, rgba(var(--redsox-red), 0.25), rgba(var(--redsox-red), 1));
+}
+
+.COL-flip {
+    background: linear-gradient(to right, rgba(var(--rockies-purple), 0.25), rgba(var(--rockies-purple), 1));
+}
+
+.KCR-flip {
+    background: linear-gradient(to right, rgba(var(--royals-blue), 0.25), rgba(var(--royals-blue), 1));
+}
+
+.DET-flip {
+    background: linear-gradient(to right, rgba(var(--tigers-blue), 0.25), rgba(var(--tigers-blue), 1));
+}
+
+.MIN-flip {
+    background: linear-gradient(to right, rgba(var(--twins-blue), 0.25), rgba(var(--twins-blue), 1));
+}
+
+.CWS-flip {
+    background: linear-gradient(to right, rgba(var(--whitesox-silver), 0.25), rgba(var(--whitesox-silver), 1));
+}
+
+.NYY-flip {
+    background: linear-gradient(to right, rgba(var(--yankees-blue), 0.25), rgba(var(--yankees-blue), 1));
+}
+
+.WAS-flip {
+    background: linear-gradient(to right, rgba(var(--nationals-red), 0.25), rgba(var(--nationals-red), 1));
+}
+
+.NYY-table {
+    background-color: rgba(var(--yankees-blue), 0.40);
+    border: 1px solid rgba(var(--yankees-blue), 1);
+}
+
+.NYY-th {
+    background-color: rgba(var(--yankees-blue), 0.25);
+    border-bottom: 1px solid rgba(var(--yankees-blue), 1);
+}
+
+.BOS-table {
+    background-color: rgba(var(--redsox-red), 0.40);
+    border: 1px solid rgba(var(--redsox-red), 1);
+}
+
+.BOS-th {
+    background-color: rgba(var(--redsox-red), 0.25);
+    border-bottom: 1px solid rgba(var(--redsox-red), 1);
+}
+
+.BAL-table {
+    background-color: rgba(var(--orioles-orange), 0.40);
+    border: 1px solid rgba(var(--orioles-orange), 1);
+}
+
+.BAL-th {
+    background-color: rgba(var(--orioles-orange), 0.25);
+    border-bottom: 1px solid rgba(var(--orioles-orange), 1);
+}
+
+.TBR-table {
+    background-color: rgba(var(--rays-baby-blue), 0.40);
+    border: 1px solid rgba(var(--rays-baby-blue), 1);
+}
+
+.TBR-th {
+    background-color: rgba(var(--rays-baby-blue), 0.25);
+    border-bottom: 1px solid rgba(var(--rays-baby-blue), 1);
+}
+
+.CWS-table {
+    background-color: rgba(var(--whitesox-silver), 0.40);
+    border: 1px solid rgba(var(--whitesox-silver), 1);
+}
+
+.CWS-th {
+    background-color: rgba(var(--whitesox-silver), 0.25);
+    border-bottom: 1px solid rgba(var(--whitesox-silver), 1);
+}
+
+.CLE-table {
+    background-color: rgba(var(--guardians-blue), 0.40);
+    border: 1px solid rgba(var(--guardians-blue), 1);
+}
+
+.CLE-th {
+    background-color: rgba(var(--guardians-blue), 0.25);
+    border-bottom: 1px solid rgba(var(--guardians-blue), 1);
+}
+
+.DET-table {
+    background-color: rgba(var(--tigers-orange), 0.40);
+    border: 1px solid rgba(var(--tigers-orange), 1);
+}
+
+.DET-th {
+    background-color: rgba(var(--tigers-orange), 0.25);
+    border-bottom: 1px solid rgba(var(--tigers-orange), 1);
+}
+
+.KCR-table {
+    background-color: rgba(var(--royals-blue), 0.40);
+    border: 1px solid rgba(var(--royals-blue), 1);
+}
+
+.KCR-th {
+    background-color: rgba(var(--royals-blue), 0.25);
+    border-bottom: 1px solid rgba(var(--royals-blue), 1);
+}
+
+.MIN-table {
+    background-color: rgba(var(--twins-blue), 0.40);
+    border: 1px solid rgba(var(--twins-blue), 1);
+}
+
+.MIN-th {
+    background-color: rgba(var(--twins-blue), 0.25);
+    border-bottom: 1px solid rgba(var(--twins-blue), 1);
+}
+
+.HOU-table {
+    background-color: rgba(var(--astros-orange), 0.40);
+    border: 1px solid rgba(var(--astros-orange), 1);
+}
+
+.HOU-th {
+    background-color: rgba(var(--astros-orange), 0.25);
+    border-bottom: 1px solid rgba(var(--astros-orange), 1);
+}
+
+.LAA-table {
+    background-color: rgba(var(--angels-red), 0.40);
+    border: 1px solid rgba(var(--angels-red), 1);
+}
+
+.LAA-th {
+    background-color: rgba(var(--angels-red), 0.25);
+    border-bottom: 1px solid rgba(var(--angels-red), 1);
+}
+
+.OAK-table {
+    background-color: rgba(var(--athletics-green), 0.40);
+    border: 1px solid rgba(var(--athletics-green), 1);
+}
+
+.OAK-th {
+    background-color: rgba(var(--athletics-green), 0.25);
+    border-bottom: 1px solid rgba(var(--athletics-green), 1);
+}
+
+.SEA-table {
+    background-color: rgba(var(--mariners-green), 0.40);
+    border: 1px solid rgba(var(--mariners-green), 1);
+}
+
+.SEA-th {
+    background-color: rgba(var(--mariners-green), 0.25);
+    border-bottom: 1px solid rgba(var(--mariners-green), 1);
+}
+
+.TEX-table {
+    background-color: rgba(var(--rangers-red), 0.40);
+    border: 1px solid rgba(var(--rangers-red), 1);
+}
+
+.TEX-th {
+    background-color: rgba(var(--rangers-red), 0.25);
+    border-bottom: 1px solid rgba(var(--rangers-red), 1);
+}
+
+.ATL-table {
+    background-color: rgba(var(--braves-red), 0.40);
+    border: 1px solid rgba(var(--braves-red), 1);
+}
+
+.ATL-th {
+    background-color: rgba(var(--braves-red), 0.25);
+    border-bottom: 1px solid rgba(var(--braves-red), 1);
+}
+
+.MIA-table {
+    background-color: rgba(var(--marlins-blue), 0.40);
+    border: 1px solid rgba(var(--marlins-blue), 1);
+}
+
+.MIA-th {
+    background-color: rgba(var(--marlins-blue), 0.25);
+    border-bottom: 1px solid rgba(var(--marlins-blue), 1);
+}
+
+.NYM-table {
+    background-color: rgba(var(--mets-blue), 0.40);
+    border: 1px solid rgba(var(--mets-blue), 1);
+}
+
+.NYM-th {
+    background-color: rgba(var(--mets-blue), 0.25);
+    border-bottom: 1px solid rgba(var(--mets-blue), 1);
+}
+
+.PHI-table {
+    background-color: rgba(var(--phillies-red), 0.40);
+    border: 1px solid rgba(var(--phillies-red), 1);
+}
+
+.PHI-th {
+    background-color: rgba(var(--phillies-red), 0.25);
+    border-bottom: 1px solid rgba(var(--phillies-red), 1);
+}
+
+.WAS-table {
+    background-color: rgba(var(--nationals-red), 0.40);
+    border: 1px solid rgba(var(--nationals-red), 1);
+}
+
+.WAS-th {
+    background-color: rgba(var(--nationals-red), 0.25);
+    border-bottom: 1px solid rgba(var(--nationals-red), 1);
+}
+
+.CHC-table {
+    background-color: rgba(var(--cubs-blue), 0.40);
+    border: 1px solid rgba(var(--cubs-blue), 1);
+}
+
+.CHC-th {
+    background-color: rgba(var(--cubs-blue), 0.25);
+    border-bottom: 1px solid rgba(var(--cubs-blue), 1);
+}
+
+.CIN-table {
+    background-color: rgba(var(--reds-red), 0.40);
+    border: 1px solid rgba(var(--reds-red), 1);
+}
+
+.CIN-th {
+    background-color: rgba(var(--reds-red), 0.25);
+    border-bottom: 1px solid rgba(var(--reds-red), 1);
+}
+
+.MIL-table {
+    background-color: rgba(var(--brewers-yellow), 0.40);
+    border: 1px solid rgba(var(--brewers-yellow), 1);
+}
+
+.MIL-th {
+    background-color: rgba(var(--brewers-yellow), 0.25);
+    border-bottom: 1px solid rgba(var(--brewers-yellow), 1);
+}
+
+.PIT-table {
+    background-color: rgba(var(--pirates-yellow), 0.40);
+    border: 1px solid rgba(var(--pirates-yellow), 1);
+}
+
+.PIT-th {
+    background-color: rgba(var(--pirates-yellow), 0.25);
+    border-bottom: 1px solid rgba(var(--pirates-yellow), 1);
+}
+
+.STL-table {
+    background-color: rgba(var(--cardinals-red), 0.40);
+    border: 1px solid rgba(var(--cardinals-red), 1);
+}
+
+.STL-th {
+    background-color: rgba(var(--cardinals-red), 0.25);
+    border-bottom: 1px solid rgba(var(--cardinals-red), 1);
+}
+
+.ARI-table {
+    background-color: rgba(var(--diamondbacks-red), 0.40);
+    border: 1px solid rgba(var(--diamondbacks-red), 1);
+}
+
+.ARI-th {
+    background-color: rgba(var(--diamondbacks-red), 0.25);
+    border-bottom: 1px solid rgba(var(--diamondbacks-red), 1);
+}
+
+.COL-table {
+    background-color: rgba(var(--rockies-purple), 0.40);
+    border: 1px solid rgba(var(--rockies-purple), 1);
+}
+
+.COL-th {
+    background-color: rgba(var(--rockies-purple), 0.25);
+    border-bottom: 1px solid rgba(var(--rockies-purple), 1);
+}
+
+.LAD-table {
+    background-color: rgba(var(--dodgers-blue), 0.40);
+    border: 1px solid rgba(var(--dodgers-blue), 1);
+}
+
+.LAD-th {
+    background-color: rgba(var(--dodgers-blue), 0.25);
+    border-bottom: 1px solid rgba(var(--dodgers-blue), 1);
+}
+
+.SDP-table {
+    background-color: rgba(var(--padres-brown), 0.40);
+    border: 1px solid rgba(var(--padres-brown), 1);
+}
+
+.SDP-th {
+    background-color: rgba(var(--padres-brown), 0.25);
+    border-bottom: 1px solid rgba(var(--padres-brown), 1);
+}
+
+.SFG-table {
+    background-color: rgba(var(--giants-orange), 0.40);
+    border: 1px solid rgba(var(--giants-orange), 1);
+}
+
+.SFG-th {
+    background-color: rgba(var(--giants-orange), 0.25);
+    border-bottom: 1px solid rgba(var(--giants-orange), 1);
+}
+
+.TOR-table {
+    background-color: rgba(var(--bluejays-light-blue), 0.40);
+    border: 1px solid rgba(var(--bluejays-light-blue), 1);
+}
+
+.TOR-th {
+    background-color: rgba(var(--bluejays-light-blue), 0.25);
+    border-bottom: 1px solid rgba(var(--bluejays-light-blue), 1);
+}
+
+
