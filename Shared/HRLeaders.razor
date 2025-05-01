@@ -6,24 +6,7 @@
 
 @if (MLBHRLeaders != null && MLBHRLeaders.LeagueLeaders != null && count < maxCount)
 {
-    @foreach (var player in MLBHRLeaders.LeagueLeaders[0].Leaders)
-    {
-        if (count < maxCount)
-        {
-            count++;
-            <a href="/team/@GetPlayerTeamLink(player.Team.Id)">
-                <div class="player-button @GetTeamAbbreviation(player.Team.Id)">
-                    <div class="musghot">
-                        <div class="img-background">
-                            <img src="@GetPlayerImage(player.Person.Id)" />
-                        </div>
-                    </div>
-                    <span>@player.Person.FullName</span><img src="../Logos/@GetCountryFlag(player.Person.BirthCountry)" class="shadow-image" />
-                    <span title="Home Runs">@player.Value</span>
-                </div>
-            </a>
-        }
-    }
+
 }
 @code {
     public MlbRosterResponse MLBRoster { get; set; }

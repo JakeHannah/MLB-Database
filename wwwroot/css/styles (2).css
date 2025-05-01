@@ -1,4 +1,4 @@
-:root {
+﻿:root {
     /* teams */
     --angels-red: 186, 0, 33;
     --angels-blue: 0, 50, 99;
@@ -121,14 +121,8 @@ header {
     height: 4rem;
     color: rgba(var(--white), 1);
     background: rgba(var(--black), 0.5);
-    border-bottom: 2px solid rgba(var(--brewers-blue), 1);
     overflow: hidden;
 }
-
-    header > img {
-        width: 440px;
-/*        z-index: -1;*/
-    }
 
 .header-row {
     display: flex;
@@ -265,7 +259,7 @@ button[type=back] {
 }
 
 .info-sidebar {
-    width: 400px; /* Fixed width for sidebar */
+    width: 600px; /* Fixed width for sidebar */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -281,13 +275,85 @@ button[type=back] {
     justify-content: center;
     width: 100%;
     height: 200px;
-    border: 2px solid rgba(var(--black), 1);
-    border-radius: 5px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
     overflow: hidden;
 }
+
+.stadium-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: 2px solid rgba(var(--black), 1);
+    border-radius: 5px;
+    position: relative; /* ← add this */
+}
+
+.batter-image-left {
+    position: absolute; /* take out of flow and layer on top */
+    top: 50%; /* center vertically */
+    left: 75%; /* center horizontally */
+    transform: translate(-50%, -50%); /* offset its own width/height */
+    z-index: 9999; /* ensure it’s above everything */
+    height: 300px;
+}
+
+.batter-image-right {
+    position: absolute; /* take out of flow and layer on top */
+    top: 50%; /* center vertically */
+    left: 25%; /* center horizontally */
+    transform: translate(-50%, -50%); /* offset its own width/height */
+    z-index: 9999; /* ensure it’s above everything */
+    height: 300px;
+}
+
+.base-occupancy {
+    text-align: center;
+    margin: 0.5rem 0;
+    font-size: 0.75rem;
+    color: var(--light-gray);
+}
+
+.bases {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 0.25rem;
+    transform: rotate(-45deg);
+    border-left: 1px solid rgba(var(--white), 0.25);
+    border-bottom: 1px solid rgba(var(--white), 0.25);
+    border-radius: 5px;
+}
+
+.base {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 1px solid rgba(var(--white), 0.5);
+    background: rgba(var(--white), 0.10);
+    border-radius: 5px;
+}
+
+    .base.first {
+        bottom: 0;
+        right: 0;
+    }
+
+    .base.second {
+        top: 0;
+        right: 0;
+    }
+
+    .base.third {
+        top: 0;
+        left: 0;
+    }
+
+    .base.occupied {
+        background: var(--white);
+    }
+
 
 .box-score {
     display: flex;
@@ -654,7 +720,7 @@ th {
     }
 
         .loading > img {
-            height: 20rem;
+            height: 100%;
         }
 
     .loading-text {

@@ -1,0 +1,38 @@
+﻿@using Microsoft.JSInterop
+@using MLB_Database.Services
+
+<div class="@CssClass" style="position: relative; width:200px; height:320px; margin:auto;">
+    <svg width="100%" height="100%" z-index="9999" viewBox="0 0 200 320" xmlns="http://www.w3.org/2000/svg">
+        <!-- the strike‑zone rectangle -->
+        <rect x="61" y="-50" width="80" height="120"
+              stroke="white" fill="none" stroke-width="2" />
+        <!-- the pitch marker, initially hidden -->
+        <circle id="@CircleId" cx="100" cy="260" r="8"
+                fill="red" opacity="0" />
+    </svg>
+</div>
+
+@code {
+    [Parameter] public PlayEvent? Pitch { get; set; }
+    [Parameter] public string CssClass { get; set; } = "";
+
+    [Inject] private IJSRuntime JS { get; set; } = default!;
+
+    // unique ID for the SVG circle so JS can find it
+    private string CircleId { get; } = $"pz-{Guid.NewGuid():N}";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Pitch?.PitchData?.Coordinates is not null)
+        {
+            var c = Pitch.PitchData.Coordinates;
+            // call our JS helper to map {PX,PZ} → screen coords and animate
+            await JS.InvokeVoidAsync(
+              "strikezone.animatePitch",
+              CircleId,
+              c.PX,    // horizontal feet from center
+              c.PZ     // height above ground, in feet
+            );
+        }
+    }
+}

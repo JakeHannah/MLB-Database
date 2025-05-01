@@ -11,6 +11,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddDbContext<MyDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyDatabase")), ServiceLifetime.Singleton);
 builder.Services.AddHttpClient<MlbApiService>(client => { client.BaseAddress = new Uri("https://statsapi.mlb.com/");});
+builder.Services.AddHttpClient<PlayByPlayService>();
 
 var app = builder.Build();
 

@@ -4,10 +4,6 @@ using System.Net.Http.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-
-
-
-
 public class MlbApiService
 {
     private readonly HttpClient _httpClient;
@@ -241,6 +237,9 @@ public class Splits
     public Stat Stat { get; set; }
     public Team Team { get; set; }
     public Player Player { get; set; }
+    public string Batter { get; set; }
+    public string Pitcher { get; set; }
+    public string MenOnBase { get; set; }
 }
 public class Stat
 {

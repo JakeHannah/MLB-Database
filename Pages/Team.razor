@@ -3,19 +3,21 @@
 @using MLB_Database.Data
 @using Microsoft.EntityFrameworkCore
 @using MLB_Database.Components
+@using System.Text.Json
 
 @inject MyDbContext DbContext
 @inject MlbApiService MLBAPI
+@inject PlayByPlayService PlayByPlayService
 @inject IJSRuntime JS
+
+@implements IDisposable
 
 @if (contentLoading)
 {
     <div class="loading">
-        <img src="../Logos/@(TeamId).png" />
-        <div class="loading-text">
-            Loading...
-        </div>
-    </div>  
+        <img src="../Logos/brewers-@(TeamId).png" />
+        <div class="loading-text">Loading...</div>
+    </div>
 }
 else
 {
@@ -23,32 +25,32 @@ else
     {
         <div class="loading">
             <img src="../Logos/@(TeamId).png" />
-            <div class="loading-text">
-                Team Not Found
-            </div>
-       </div>
-    }
-    <header class="@TeamRoster.Team_Abreviation">
-        <div class="header-row">
-            <img id="team-logo" style="margin-left: 1rem;" src="@GetLogoUrl(TeamRoster.MLBId)">
-            <div id="team-name">@TeamRoster.Team_Name</div>
-            <a href="/" style="width: fit-content;"><div class="info-box">Back</div></a>
+            <div class="loading-text">Team Not Found</div>
         </div>
-    </header>
+    }
+    else
+    {
+        <header class="@TeamRoster.Team_Abreviation">
+            <div class="header-row">
+                <img id="team-logo" style="margin-left: 1rem;" src="@GetLogoUrl(TeamRoster.MLBId)" />
+                <div id="team-name">@TeamRoster.Team_Name</div>
+                <a href="/" style="width: fit-content;"><div class="info-box">Back</div></a>
+            </div>
+        </header>
 
         <div class="team-info-background">
             <div class="team-info">
                 @if (Standing == "1st")
                 {
-                    <div class="info-box green" title="@Standing in @TeamRoster.Team_Division">@Standing</div>
+                    <div class="info-box green" title="@($"1st in {TeamRoster.Team_Division}")">@Standing</div>
                 }
                 else if (Standing == "5th")
                 {
-                    <div class="info-box pink" title="@Standing in @TeamRoster.Team_Division">@Standing</div>
+                    <div class="info-box pink" title="@($"5th in {TeamRoster.Team_Division}")">@Standing</div>
                 }
                 else
                 {
-                    <div class="info-box" title="@Standing in @TeamRoster.Team_Division">@Standing</div>
+                    <div class="info-box" title="@($"Standing in {TeamRoster.Team_Division}")">@Standing</div>
                 }
 
                 @if (Clinched)
@@ -56,14 +58,14 @@ else
                     <div class="info-box green" title="Clinched Playoffs">Clinched</div>
                 }
 
-                @if (StreakCode != null && StreakCode.Contains("W"))
+@*                 @if (!string.IsNullOrEmpty(StreakCode) && StreakCode.Contains("W"))
                 {
                     <div class="info-box green" title="Streak">Streak: @StreakCode</div>
                 }
-                else if (StreakCode != null && StreakCode.Contains("L"))
+                else if (!string.IsNullOrEmpty(StreakCode) && StreakCode.Contains("L"))
                 {
                     <div class="info-box pink" title="Streak">Streak: @StreakCode</div>
-                }
+                } *@
                 else
                 {
                     <div class="info-box" title="Streak">Streak: -</div>
@@ -72,12 +74,14 @@ else
                 <div class="info-box" title="Games Back">Games Back: @GamesBack</div>
                 <div class="info-box" title="Overall Team Record">Record: @Wins-@Losses</div>
                 <div class="info-box" title="Win/Loss %">PCT: @WinPercentage%</div>
+
                 @if (HasGames)
                 {
                     <div class="next-game" title="@GameDay">
                         <div>@GameTimeFormat</div>
                         <div>@AwayTeamWins-@AwayTeamLosses</div>
-                        <img src="../Logos/@AwayTeamDb.Team_Logo">@@<img src="../Logos/@HomeTeamDb.Team_Logo">
+                        <img src="../Logos/@AwayTeamDb.Team_Logo" />
+                        <img src="../Logos/@HomeTeamDb.Team_Logo" />
                         <div style="font-size: 16px;">@HomeTeamWins-@HomeTeamLosses</div>
                     </div>
                 }
@@ -85,17 +89,21 @@ else
                 {
                     <div class="next-game">No Game Today</div>
                 }
-                <div class="info-box" title="@TeamRoster.Team_Abreviation Baseball Reference">
-                    <a href="https://www.baseball-reference.com/teams/@TeamRoster.Team_Abreviation/2024.shtml" target="_blank">
+
+                <div class="info-box" title="@($"{TeamRoster.Team_Abreviation} Baseball Reference")">
+                    <a href="https://www.baseball-reference.com/teams/@TeamRoster.Team_Abreviation/2025.shtml" target="_blank">
                         <img src="../logos/ref.png" style="height: 16px;" />
                     </a>
                 </div>
                 <div class="info-box"><img src="../Logos/@TeamRoster.Team_League_Logo" />@TeamRoster.Team_League</div>
                 <div class="info-box">Established: @TeamRoster.Team_Established</div>
                 <div class="info-box">Ballpark: @TeamRoster.Team_Ballpark</div>
-                <a href="@TeamRoster.Team_URL" style="width: fit-content" target="_blank"><div class="info-box">News</div></a>
+                <a href="@TeamRoster.Team_URL" style="width: fit-content" target="_blank">
+                    <div class="info-box">News</div>
+                </a>
             </div>
         </div>
+
         <div class="team-row">
             <div class="rosters">
                 <PlayerList Players="Infielders" PositionType="Infielders" CssClass="yellow" KvPPlayerIdPlayerHittingStats="KvPPlayerIdPlayerHittingStats" />
@@ -107,26 +115,52 @@ else
                 }
                 @if (TwoWay.Count > 0)
                 {
-                    <TwoWayList Players="TwoWay" CssClass="orange" KvPPlayerIdPlayerHittingStats="KvPPlayerIdPlayerHittingStats" KvPPlayerIdPlayerPitchingStats="KvPPlayerIdPlayerPitchingStats" />
+                    <TwoWayList Players="TwoWay" CssClass="orange"
+                                KvPPlayerIdPlayerHittingStats="KvPPlayerIdPlayerHittingStats"
+                                KvPPlayerIdPlayerPitchingStats="KvPPlayerIdPlayerPitchingStats" />
                 }
                 <PitcherList Players="Pitchers" CssClass="pink" KvPPlayerIdPlayerPitchingStats="KvPPlayerIdPlayerPitchingStats" />
             </div>
+
             @if (CurrentGameStats != null)
             {
                 <div class="info-sidebar">
-                    <div class="stadium" style="background-image: url('@GetStadiumUrl("day", HomeTeamDb.StadiumId)')">
-                        <div class="box-score">
-                            <div class="bs-row">
-                                <div class="away-score @AwayTeamDb.Team_Abreviation">
-                                    <img src="@GetLogoUrl(AwayTeamDb.MLBId)">
-                                    <h1>@CurrentGameStats.Teams.Away.Runs</h1>
-                                </div>
-                                <div class="home-score @HomeTeamDb.Team_Abreviation-flip">
-                                    <h1>@CurrentGameStats.Teams.Home.Runs</h1>
-                                    <img src="@GetLogoUrl(HomeTeamDb.MLBId)">
+                    <div class="stadium-container">
+                        <div class="stadium" style="background-image: url('@GetStadiumUrl("day", HomeTeamDb.StadiumId)')">
+                            <div class="box-score">
+                                <div class="bs-row">
+                                    <div class="away-score @AwayTeamDb.Team_Abreviation">
+                                        <img src="@GetLogoUrl(AwayTeamDb.MLBId)" />
+                                        <h1>@CurrentGameStats.Teams.Away.Runs</h1>
+                                    </div>
+                                    <div class="home-score @($"{HomeTeamDb.Team_Abreviation}-flip")">
+                                        <h1>@CurrentGameStats.Teams.Home.Runs</h1>
+                                        <img src="@GetLogoUrl(HomeTeamDb.MLBId)" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="stadium" style="background-image: url('@GetInfieldUrl()"></div>
+                            @* @if (CurrentGameStats.IsTopInning)
+                            {
+                            <img
+                                src="@GetBatterUrl(AwayTeamDb.MLBId, NewestPlay.Matchup.BatSide.Description.ToLower(), "away")"
+                                     class="batter-image-@NewestPlay.Matchup.BatSide.Description.ToLower()" />
+                            }
+                            else
+                            {
+                            <img
+                                src="@GetBatterUrl(HomeTeamDb.MLBId, NewestPlay.Matchup.BatSide.Description.ToLower(), "home")"
+                                     class="batter-image-@NewestPlay.Matchup.BatSide.Description.ToLower()" />
+                            } *@
+                    </div>
+                    <div class="base-occupancy">
+                        <div class="bases">
+                            <div class="base third  @(ThirdBaseOccupied  ? "occupied" : "")"></div>
+                            <div class="base second @(SecondBaseOccupied ? "occupied" : "")"></div>
+                            <div class="base first  @(FirstBaseOccupied  ? "occupied" : "")"></div>
+                        </div>
+                        <small>Base Occupancy</small>
                     </div>
                     <div class="table-score">
                         <table>
@@ -144,7 +178,7 @@ else
                             </thead>
                             <tbody>
                                 <tr class="@AwayTeamDb.Team_Abreviation">
-                                    <td class="team-box"><img src="@GetLogoUrl(AwayTeamDb.MLBId)"></td>
+                                    <td class="team-box"><img src="@GetLogoUrl(AwayTeamDb.MLBId)" /></td>
                                     @foreach (var inning in CurrentGameStats.Innings)
                                     {
                                         <td>@inning.Away.Runs</td>
@@ -154,7 +188,7 @@ else
                                     <td>@CurrentGameStats.Teams.Away.Errors</td>
                                 </tr>
                                 <tr class="@HomeTeamDb.Team_Abreviation">
-                                    <td class="team-box"><img src="@GetLogoUrl(HomeTeamDb.MLBId)"></td>
+                                    <td class="team-box"><img src="@GetLogoUrl(HomeTeamDb.MLBId)" /></td>
                                     @foreach (var inning in CurrentGameStats.Innings)
                                     {
                                         <td>@inning.Home.Runs</td>
@@ -166,30 +200,59 @@ else
                             </tbody>
                         </table>
                     </div>
-                    @*                         <div class="inning-info">
-        <p>Current Inning: @CurrentGameStats.CurrentInningOrdinal (@CurrentGameStats.InningState)</p>
-        <p>Outs: @CurrentGameStats.Outs</p>
-        <p>Balls: @CurrentGameStats.Balls</p>
-        <p>Strikes: @CurrentGameStats.Strikes</p>
-        </div> *@
+
+                    @if (NewestPlay != null)
+                    {
+                        <div class="play-by-play newest">
+                            <h4>Latest Play</h4>
+                            <small>
+                                @NewestPlay.About.HalfInning.ToUpperInvariant()
+                                @NewestPlay.About.Inning — @NewestPlay.Result.Event
+                            </small>
+                            <div>@NewestPlay.Result.Description</div>
+                        </div>
+                        <div id="pitch-viz-container" style="margin-top:1rem;">
+                            <!-- Pitch visualization canvas -->
+                            <canvas id="pitchCanvas" width="400" height="600" style="border:1px solid #ccc;"></canvas>
+                        </div>
+                    }
                 </div>
             }
         </div>
     }
 }
+
 @code {
-    [Parameter]
-    public string? TeamId { get; set; }
+    [Parameter] public string? TeamId { get; set; }
+
+    // Team & division info
     public TeamInfo? TeamRoster { get; set; }
-    public TeamInfo? HomeTeamDb { get; set; }
-    public TeamInfo? AwayTeamDb { get; set; }
+    private List<TeamInfo> teams = new();
+
+    // Record & standings
     public int Wins { get; set; }
     public int Losses { get; set; }
     public string? Standing { get; set; }
+    public string? GamesBack { get; set; }
+    public bool Clinched { get; set; }
+    public bool HasWildCard { get; set; }
     public string? WinPercentage { get; set; }
+
+    // Schedule & matchup
+    public MatchUpResponse? MatchUp { get; set; }
+    public bool HasGames { get; set; } = true;
+    public string? GameTime { get; set; }
+    public string? GameTimeFormat { get; set; }
+    public string? GameDay { get; set; }
+    public int HomeTeamWins { get; set; }
+    public int HomeTeamLosses { get; set; }
+    public int AwayTeamWins { get; set; }
+    public int AwayTeamLosses { get; set; }
+    public TeamInfo? HomeTeamDb { get; set; }
+    public TeamInfo? AwayTeamDb { get; set; }
+
+    // Roster & stats
     public MlbRosterResponse? MLBRoster { get; set; }
-    public MlbPlayerStatsResponse? PlayerStats { get; set; }
-    public double BattingAverage { get; set; }
     public List<Player> Pitchers { get; set; } = new();
     public List<Player> Infielders { get; set; } = new();
     public List<Player> Catchers { get; set; } = new();
@@ -198,102 +261,102 @@ else
     public List<Player> TwoWay { get; set; } = new();
     public Dictionary<int, MlbPlayerStatsResponse> KvPPlayerIdPlayerHittingStats { get; set; } = new();
     public Dictionary<int, MlbPlayerStatsResponse> KvPPlayerIdPlayerPitchingStats { get; set; } = new();
-    private List<TeamInfo> teams = new List<TeamInfo>();
-    public MatchUpResponse? MatchUp { get; set; }
-    public string? Link { get; set; }
-    public string? GameType { get; set; }
-    public string? Name { get; set; }
-    public string? HomeTeam { get; set; }
-    public string? AwayTeam { get; set; }
-    public string? GameDate { get; set; }
-    public string? GameTime { get; set; }
-    public string? GameTimeFormat { get; set; }
-    public string? GameDay { get; set; }
-    public int HomeTeamWins { get; set; }
-    public int AwayTeamWins { get; set; }
-    public int HomeTeamLosses { get; set; }
-    public int AwayTeamLosses { get; set; }
-    public string? StreakCode { get; set; }
-    public string? GamesBack { get; set; }
-    public bool Clinched { get; set; }
-    public bool HasWildCard { get; set; }
-    private bool contentLoading = true;
-    public bool HasGames { get; set; } = true;
-    public int StadiumId { get; set; }
+
+    // Linescore & newest play‑by‑play
     public LinescoreResponse? CurrentGameStats { get; set; }
+    private PlayByPlayResponse? PlayByPlay { get; set; }
+    private AllPlay? NewestPlay { get; set; }
+
+    private bool contentLoading = true;
+    private System.Threading.Timer? _refreshTimer;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadDataAsync();    // loads standings, plays, etc.
+
+            // pass the full PlayByPlayResponse to JS
+            var pbpJson = JsonSerializer.Serialize(PlayByPlay);
+            await JS.InvokeVoidAsync("pitchViz.initPitchViz", pbpJson);
+
+            // start your 15 s timer
+            _refreshTimer = new System.Threading.Timer(
+                async _ =>
+                {
+                    await InvokeAsync(async () =>
+                    {
+                        await RefreshGameStatsAsync();
+                        // re‑serialize & push to JS
+                        var json = JsonSerializer.Serialize(PlayByPlay);
+                        await JS.InvokeVoidAsync("pitchViz.updatePitchViz", json);
+                    });
+                },
+                null,
+                TimeSpan.FromSeconds(15),
+                TimeSpan.FromSeconds(15)
+            );
+        }
+    }
+
 
     private async Task LoadDataAsync()
     {
         contentLoading = true;
+        StateHasChanged();
 
-        var fetchDataTask = DbContext.TeamInfo.ToListAsync();
-        var delayTask = Task.Delay(1000);
-
-        await Task.WhenAll(fetchDataTask, delayTask);
-
-        teams = fetchDataTask.Result;
+        // Load all teams from DB
         teams = await DbContext.TeamInfo.ToListAsync();
-        TeamRoster = teams.FirstOrDefault(x => x.Id == int.Parse(TeamId));
+        TeamRoster = teams.FirstOrDefault(t => t.Id == int.Parse(TeamId!));
+        if (TeamRoster == null)
+        {
+            contentLoading = false;
+            return;
+        }
+
+        // Get standings & record
         var record = await MLBAPI.GetTeamRecord(TeamRoster.MLBId, DateTime.Now.Year);
+        Wins = record.LeagueRecord.Wins;
+        Losses = record.LeagueRecord.Losses;
+        Standing = Ordinals.AddOrdinal(record.DivisionRank);
+        GamesBack = record.GamesBack;
+        Clinched = record.Records.Clinched;
+        HasWildCard = record.Records.HasWildCard;
+        WinPercentage = (Math.Round((double)Wins / (Wins + Losses), 4) * 100).ToString("0.00");
 
+        // Get today's matchup
         MatchUp = await MLBAPI.GetMatchUp(TeamRoster.MLBId);
-
         if (MatchUp.TotalGames == 0)
         {
             HasGames = false;
         }
         else
         {
-            HomeTeam = MatchUp.Dates[0].Games[0].Teams.Home.Team.Name;
-            HomeTeamWins = MatchUp.Dates[0].Games[0].Teams.Home.LeagueRecord.Wins;
-            HomeTeamLosses = MatchUp.Dates[0].Games[0].Teams.Home.LeagueRecord.Losses;
-
-            AwayTeam = MatchUp.Dates[0].Games[0].Teams.Away.Team.Name;
-            AwayTeamWins = MatchUp.Dates[0].Games[0].Teams.Away.LeagueRecord.Wins;
-            AwayTeamLosses = MatchUp.Dates[0].Games[0].Teams.Away.LeagueRecord.Losses;
-
-            Link = MatchUp.Dates[0].Games[0].Link;
-            GameType = MatchUp.Dates[0].Games[0].GameType;
-            GameTime = MatchUp.Dates[0].Games[0].GameDate;
-
-            if (DateTime.TryParse(GameTime, out var gameDateTime))
-            {
-                GameTimeFormat = gameDateTime.ToString("h:mm tt");
-            }
-            else
-            {
-                GameTimeFormat = "Invalid Date Format"; // fallback message in case parsing fails
-            }
-
-            HomeTeamDb = teams.FirstOrDefault(x => x.MLBId == MatchUp.Dates[0].Games[0].Teams.Home.Team.Id);
-            AwayTeamDb = teams.FirstOrDefault(x => x.MLBId == MatchUp.Dates[0].Games[0].Teams.Away.Team.Id);
-
-            GameDate = MatchUp.Dates[0].Games[0].OfficialDate;
-            if (DateTime.TryParse(GameDate, out var gameDate))
-            {
-                GameDay = gameDate.DayOfWeek.ToString();
-            }
+            var game = MatchUp.Dates[0].Games[0];
+            HomeTeamDb = teams.FirstOrDefault(x => x.MLBId == game.Teams.Home.Team.Id);
+            AwayTeamDb = teams.FirstOrDefault(x => x.MLBId == game.Teams.Away.Team.Id);
+            HomeTeamWins = game.Teams.Home.LeagueRecord.Wins;
+            HomeTeamLosses = game.Teams.Home.LeagueRecord.Losses;
+            AwayTeamWins = game.Teams.Away.LeagueRecord.Wins;
+            AwayTeamLosses = game.Teams.Away.LeagueRecord.Losses;
+            GameTime = game.GameDate;
+            GameTimeFormat = DateTime.TryParse(GameTime, out var dt)
+                                ? dt.ToString("h:mm tt")
+                                : "TBD";
+            GameDay = DateTime.TryParse(game.OfficialDate, out var odt)
+                                ? odt.DayOfWeek.ToString()
+                                : "";
         }
 
-        GamesBack = record.GamesBack;
-        Clinched = record.Records.Clinched;
-        HasWildCard = record.Records.HasWildCard;
-
-        Wins = record.LeagueRecord.Wins;
-        Losses = record.LeagueRecord.Losses;
-        Standing = Ordinals.AddOrdinal(record.DivisionRank);
-        WinPercentage = (Math.Round((double)Wins / ((double)Wins + (double)Losses), 4) * 100).ToString("0.00");
+        // Load roster + stats
         MLBRoster = await MLBAPI.GetTeamRoster(TeamRoster.MLBId);
-
-        foreach (var player in MLBRoster.Roster)
+        foreach (var p in MLBRoster.Roster)
         {
-            var hittingStats = await MLBAPI.GetPlayerSeasonStats(player.Person.Id, DateTime.Now.Year, "hitting");
-            KvPPlayerIdPlayerHittingStats.Add(player.Person.Id, hittingStats);
-            var pitchingStats = await MLBAPI.GetPlayerSeasonStats(player.Person.Id, DateTime.Now.Year, "pitching");
-            KvPPlayerIdPlayerPitchingStats.Add(player.Person.Id, pitchingStats);
-
-            player.Person.Image = MLBAPI.GetPlayerImageUrl(player.Person.Id);
-            player.Person.Stats = await MLBAPI.GetPlayerSeasonStats(player.Person.Id, 2023, "hitting");
+            KvPPlayerIdPlayerHittingStats[p.Person.Id] =
+                await MLBAPI.GetPlayerSeasonStats(p.Person.Id, DateTime.Now.Year, "hitting");
+            KvPPlayerIdPlayerPitchingStats[p.Person.Id] =
+                await MLBAPI.GetPlayerSeasonStats(p.Person.Id, DateTime.Now.Year, "pitching");
+            p.Person.Image = MLBAPI.GetPlayerImageUrl(p.Person.Id);
         }
 
         Pitchers = MLBRoster.Roster.Where(x => x.Position.Type == "Pitcher").ToList();
@@ -303,68 +366,89 @@ else
         DH = MLBRoster.Roster.Where(x => x.Position.Type == "Hitter").ToList();
         TwoWay = MLBRoster.Roster.Where(x => x.Position.Type == "Two-Way Player").ToList();
 
+        // Initial linescore + newest play
         if (HasGames)
         {
-            await LoadCurrentGameStatsAsync(MatchUp.Dates[0].Games[0].GamePk);
+            var pk = MatchUp.Dates[0].Games[0].GamePk;
+            await LoadCurrentGameStatsAsync(pk);
+
+            var pbp = await PlayByPlayService.GetPlayByPlayAsync(pk);
+            PlayByPlay = pbp;
+            if (pbp?.AllPlays?.Any() == true)
+            {
+                NewestPlay = pbp.AllPlays.Last();
+            }
         }
+
+        UpdateBaseOccupancy();
 
         contentLoading = false;
         StateHasChanged();
     }
+
+    // 1) occupancy flags
+    public bool FirstBaseOccupied { get; set; }
+    public bool SecondBaseOccupied { get; set; }
+    public bool ThirdBaseOccupied { get; set; }
+
+    // 2) helper to set them
+    private void UpdateBaseOccupancy()
+    {
+        if (NewestPlay?.Runners != null)
+        {
+            FirstBaseOccupied = NewestPlay.Runners.Any(r => r.Movement.End == "1B" && r.Movement.IsOut != true);
+            SecondBaseOccupied = NewestPlay.Runners.Any(r => r.Movement.End == "2B" && r.Movement.IsOut != true);
+            ThirdBaseOccupied = NewestPlay.Runners.Any(r => r.Movement.End == "3B" && r.Movement.IsOut != true);
+        }
+        else
+        {
+            FirstBaseOccupied =
+            SecondBaseOccupied =
+            ThirdBaseOccupied = false;
+        }
+    }
+
 
     private async Task LoadCurrentGameStatsAsync(int gamePk)
     {
         CurrentGameStats = await MLBAPI.GetCurrentGameStats(gamePk);
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    private async Task RefreshGameStatsAsync()
     {
-        if (firstRender)
+        if (HasGames)
         {
-            await LoadDataAsync();
-        }
-    }
+            var pk = MatchUp!.Dates[0].Games[0].GamePk;
+            await LoadCurrentGameStatsAsync(pk);
 
-    public string GetLogoUrl(int teamId)
-    {
-        return $"https://www.mlbstatic.com/team-logos/team-cap-on-dark/{teamId}.svg";
-    }
-
-    public string GetCircleLogo(int teamId)
-    {
-        return $"https://midfield.mlbstatic.com/v1/team/{teamId}/spots/48";
-    }
-
-    public string GetStadiumUrl(string time, int stadiumId)
-    {
-        DateTime gameDateTime;
-
-        if (DateTime.TryParse(GameTime, out gameDateTime))
-        {
-            if (gameDateTime.Hour >= 17) // 5 PM
+            var pbp = await PlayByPlayService.GetPlayByPlayAsync(pk);
+            if (pbp?.AllPlays?.Any() == true)
             {
-                time = "night";
-            }
-            else
-            {
-                time = "day";
-            }
-        }
-        else
-        {
-            int currentHour = DateTime.Now.Hour;
-            if (currentHour >= 17)
-            {
-                time = "night";
-            }
-            else
-            {
-                time = "day";
+                NewestPlay = pbp.AllPlays.Last();
             }
         }
 
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        _refreshTimer?.Dispose();
+    }
+
+    public string GetLogoUrl(int teamId) => $"https://www.mlbstatic.com/team-logos/team-cap-on-dark/{teamId}.svg";
+
+    public string GetBatterUrl(int teamId, string batSide, string homeAway) => $"https://prod-gameday.mlbstatic.com/responsive-gameday-assets/1.3.0/images/batters/immortal/{batSide}/{teamId}-{homeAway}.png";
+
+    public string GetStadiumUrl(string _, int stadiumId)
+    {
+        var isNight = DateTime.TryParse(GameTime, out var dt)
+            ? dt.Hour >= 17
+            : DateTime.Now.Hour >= 17;
+        var time = isNight ? "night" : "day";
         return $"https://prod-gameday.mlbstatic.com/responsive-gameday-assets/1.3.0/images/stadiums/{time}/{stadiumId}@2x.jpg";
     }
 
+    public string GetInfieldUrl() => $"https://prod-gameday.mlbstatic.com/responsive-gameday-assets/1.3.0/images/stadiums/infield/default@2x.jpg";
 
 }
